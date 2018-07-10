@@ -3,58 +3,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EventTracker.DateData;
 using EventTracker.Models;
 
 namespace EventTracker.UserData
 {
     public class DataLoader
     {
+        public List<EventModel> events { get; private set; }
+
+        public DataLoader()
+        {
+            events = new List<EventModel>();
+        }
         /// <summary>
         /// Loads data from text file where each line represent one event in format : title-description-startTime(eg. 15:00/23:05:2018)-endTime
         /// </summary>
         /// <param name="filePath">Text file with data</param>
         /// <returns>Returns list of loaded events</returns>
-        public List<EventModel> Load(string filePath)
+        public void Load()
         {
-            List<EventModel> events = new List<EventModel>();
-            string[] buffer = new string[4];
-            try
-            {  
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        try
-                        {
-                            string line = sr.ReadLine();
-                            buffer = line.Split("-").ToArray();
-                            int years = int.Parse(buffer[2].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(2));
-                            int months = int.Parse(buffer[2].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(1));
-                            int days = int.Parse(buffer[2].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(0));
-                            int hours = int.Parse(buffer[2].Split("/").ToArray().ElementAt(0).Split(":").ToArray().ElementAt(0));
-                            int minutes = int.Parse(buffer[2].Split("/").ToArray().ElementAt(0).Split(":").ToArray().ElementAt(1));
-                            DateTime start = new DateTime(years, months, days, hours, minutes, 0);
-                            years = int.Parse(buffer[3].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(2));
-                            months = int.Parse(buffer[3].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(1));
-                            days = int.Parse(buffer[3].Split("/").ToArray().ElementAt(1).Split(":").ToArray().ElementAt(0));
-                            hours = int.Parse(buffer[3].Split("/").ToArray().ElementAt(0).Split(":").ToArray().ElementAt(0));
-                            minutes = int.Parse(buffer[3].Split("/").ToArray().ElementAt(0).Split(":").ToArray().ElementAt(1));
-                            DateTime end = new DateTime(years, months, days, hours, minutes, 0);
-                            events.Add(new EventModel { Title = buffer[0], Description = buffer[1], StartTime = start, EndTime = end });
-                        }
-                        catch (InvalidDataException e)
-                        {
-                            throw e;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return events;
+            
+            // dummy data loading...
+            var day1 = new Date() { Year = 2017, Month = 5, Day = 25 };
+            var day2 = new Date() { Year = 2017, Month = 5, Day = 27 };
+            var day3 = new Date() { Year = 2017, Month = 5, Day = 13 };
+            var day4 = new Date() { Year = 2017, Month = 5, Day = 25 };
+            var day5 = new Date() { Year = 2017, Month = 5, Day = 25 };
+            events.Add(new EventModel() { Title = "Something1", Description = "Doing something1", Date = day1 });
+            events.Add(new EventModel() { Title = "Something2", Description = "Doing something2", Date = day1 });
+            events.Add(new EventModel() { Title = "Something3", Description = "Doing something3", Date = day2 });
+            events.Add(new EventModel() { Title = "Something4", Description = "Doing something4", Date = day2 });
+            events.Add(new EventModel() { Title = "Something5", Description = "Doing something5", Date = day3 });
+            events.Add(new EventModel() { Title = "Something6", Description = "Doing something6", Date = day3 });
         }
     }
 }

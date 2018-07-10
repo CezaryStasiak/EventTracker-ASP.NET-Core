@@ -1,6 +1,7 @@
-﻿
-@{
-    Layout = null;
+﻿@using EventTracker.Models;
+@{ 
+  
+    var eve = Model;
 }
 
 <!DOCTYPE html>
@@ -11,6 +12,13 @@
     <title>Index</title>
 </head>
 <body>
-    <p>Events Main Page</p>
+    @{ foreach (var e in eve)
+        {
+            <p>@e.Title</p>
+            <p>@e.Date</p>
+            <p>@e.Description</p>
+        }
+
+    }
 </body>
 </html>
