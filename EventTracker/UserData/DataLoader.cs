@@ -17,7 +17,7 @@ namespace EventTracker.UserData
         public List<EventModel> Load(string filePath)
         {
             List<EventModel> events = new List<EventModel>();
-            string[] buffer = new string[5];
+            string[] buffer = new string[4];
             try
             {  
                 using (StreamReader sr = new StreamReader(filePath))
@@ -44,15 +44,14 @@ namespace EventTracker.UserData
                         }
                         catch (InvalidDataException e)
                         {
-                            Console.WriteLine("Data format is invalid !" + e.Message);
+                            throw e;
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be read");
-                Console.WriteLine(e.Message);
+                throw e;
             }
 
             return events;
