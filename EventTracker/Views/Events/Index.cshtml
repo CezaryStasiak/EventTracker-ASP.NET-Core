@@ -1,24 +1,42 @@
 ﻿@using EventTracker.Models;
-@{ 
-  
-    var eve = Model;
-}
 
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <title>Index</title>
 </head>
-<body>
-    @{ foreach (var e in eve)
-        {
-            <p>@e.Title</p>
-            <p>@e.Date</p>
-            <p>@e.Description</p>
-        }
 
-    }
+<body>
+    <section id="Calendar">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center" id="year">years</div>
+            </div>
+            <div class="row">
+                <div class="col text-center" id="months">months</div>
+            </div>
+            <div class="container">
+                <div class="col text-center" id="days">days</div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <p>Tutaj Ajax test</p>
+        <p id="events"></p>
+    </section>
+    <script>
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("events").innerHTML = xhttp.responseText;
+                }
+            };
+            xhttp.open("GET", "event/2017527", true);
+            xhttp.send();
+        
+    </script>
 </body>
 </html>

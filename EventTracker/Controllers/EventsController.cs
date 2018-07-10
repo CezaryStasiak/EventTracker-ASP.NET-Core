@@ -22,10 +22,10 @@ namespace EventTracker.Controllers
         }
 
         [HttpGet("event/{date}")]
-        public IActionResult Index(int date)
+        public IActionResult SingleEvent(int date)
         {
-            return View(data.events.Where(e => int.Parse($"{e.Date.Year}{e.Date.Month}{e.Date.Day}") == date));
+            return new JsonResult(data.events[0]);
         }
-        
+
     }
 }
