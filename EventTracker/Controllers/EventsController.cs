@@ -12,17 +12,17 @@ namespace EventTracker.Controllers
         DataLoader data = new DataLoader();
         public EventsController()
         {
-            data.Load();
+
         }
         
         public IActionResult Index()
         {
             DataLoader data = new DataLoader();
-            return View(data.events);
+            return View(new JsonResult(data.events));
         }
 
         [HttpGet("event/{date}")]
-        public IActionResult SingleEvent(int date)
+        public IActionResult GetEventsByDate(int date)
         {
             return new JsonResult(data.events[0]);
         }

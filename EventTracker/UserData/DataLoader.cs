@@ -15,15 +15,11 @@ namespace EventTracker.UserData
         public DataLoader()
         {
             events = new List<EventModel>();
+            Load();
         }
-        /// <summary>
-        /// Loads data from text file where each line represent one event in format : title-description-startTime(eg. 15:00/23:05:2018)-endTime
-        /// </summary>
-        /// <param name="filePath">Text file with data</param>
-        /// <returns>Returns list of loaded events</returns>
-        public void Load()
+
+        private void Load()
         {
-            
             // dummy data loading...
             var day1 = new Date() { Year = 2017, Month = 5, Day = 25 };
             var day2 = new Date() { Year = 2017, Month = 5, Day = 27 };
