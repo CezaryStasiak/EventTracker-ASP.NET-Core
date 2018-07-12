@@ -1,29 +1,12 @@
 ﻿body {
 }
 
-.day {
-    margin-left: 5px;
-    margin-right: 5px;
+#days {
+    margin: 20px;
+    padding: 20px;
 }
 
-.month{
-    margin-left: 5px;
-    margin-right: 5px;
+#months{
+    margin: 20px;
 }
 
-.eventName{
-    border: 2px solid black;
-}
-
-.eventDesc {
-    border: 2px solid rgb(185, 167, 27);
-}
-
-.eventDate {
-    border: 2px solid #b200ff;
-}
-
-.eventsRows{
-    display: block;
-    margin: 10px 10px 10px 10px;
-}

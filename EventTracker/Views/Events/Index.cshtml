@@ -22,7 +22,6 @@
                     </div>
                 </div>
             </div>
-            <div class="container"><div class="row"><div class="col"></div></div></div>
             <div class="container">
                 <div class="row">
                     <div class="col text-center" id="days">
@@ -39,11 +38,6 @@
                         <h4 class="media-heading eventName" id="eveName"></h4>
                         <p id="eventDesc"></p>
                         <div class="media-right"><p class="eventDate" id="eveDate"></p></div>
-                        <script>
-                                    obj = JSON.parse('@Json.Serialize(Model)');
-                                    var name = document.getElementById("eveName");
-                                    name.innerText = obj.value[0].title + " " + obj.value[0].description;
-                        </script>
                     </div>
                 </div>
             </div>

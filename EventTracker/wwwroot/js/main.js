@@ -11,7 +11,7 @@ window.onload = function () {
     var months = document.getElementById("months");
     for (var i = 0; i < 12; i++) {
         var x = document.createElement("div");
-        x.id = "month" + i + "Button";
+        x.id = "month" + i + "button";
         x.innerText = monthName[i];
         x.classList += "btn btn-warning month";
         months.appendChild(x);
@@ -24,14 +24,25 @@ window.onload = function () {
         days.appendChild(m);
         for (var i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
             var x = document.createElement("div");
-            x.id = "month" + v + "day" + i;
+            x.id = "month" + v + "day" + i + "button";
             x.innerText = i;
             x.classList += "btn btn-info day";
             m.appendChild(x);
         }
     }
+
+    hideDays(new Date().getMonth());
 }
 
 function daysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
+}
+
+function hideDays(id) {
+    for (var i = 1; i <= 12; i++) {
+        var x = document.getElementById("month" + i + "days");
+        if (i != id) {
+        x.style.display = "none";
+        }
+    }
 }
