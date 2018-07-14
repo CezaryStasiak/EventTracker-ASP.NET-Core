@@ -53,10 +53,6 @@ function daysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
 }
 
-var func = function () {
-    alert("siema");
-}
-
 var hideDays = function(id) {
         for (var i = 1; i <= 12; i++) {
                 let d = document.getElementById("month" + i + "days");
