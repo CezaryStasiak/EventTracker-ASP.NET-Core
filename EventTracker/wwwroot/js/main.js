@@ -3,10 +3,10 @@ window.onload = function () {
 
     //setting year
     getYear();
-    //setting months
-    setDays();
-    setMonths();
     //setting days for each month
+    setDays();
+    //setting months
+    setMonths();
     
 }
 
