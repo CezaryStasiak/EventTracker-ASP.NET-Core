@@ -7,7 +7,7 @@ window.onload = function () {
     setDays();
     //setting months
     setMonths();
-    
+
 }
 
 function getYear() {
@@ -60,6 +60,33 @@ var hideDays = function(id) {
         }
         let q = document.getElementById("month" + id + "days");
         q.style.display = "block";
+}
+
+function loadEvents (value) {
+        let list = document.getElementById("eventsList");
+    for (let i = 0; i < value.length; i++) {
+
+        let x = document.createElement("div");
+        x.classList = "media-body";
+        x.id = "eventMediaBody" + i;
+        list.appendChild(x);
+
+        let y = document.createElement("h4");
+        y.classList = "media-heading eventName";
+        y.innerText = value[i].title;
+        document.getElementById("eventMediaBody" + i).appendChild(y);
+
+        let z = document.createElement("p");
+        z.id = "eveDesc" + i;
+        z.innerText = value[i].description;
+        document.getElementById("eventMediaBody" + i).appendChild(z);
+
+        let v = document.createElement("div");
+        v.classList = "media-right";
+        v.innerHTML = value[i].date.day + "/" + value[i].date.month + "/" + value[i].date.year;
+        document.getElementById("eventMediaBody" + i).appendChild(v);
+
+    }
 }
 
 
