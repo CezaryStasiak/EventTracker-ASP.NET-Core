@@ -9,5 +9,11 @@ namespace EventTracker.DateData
     {
         public int Minute { get; set; }
         public int Hour { get; set; }
+
+        public override string ToString()
+        {
+            return this == null ? "Time not set" : $"{Hour}:{Minute}";
+        }
     }
+
 }

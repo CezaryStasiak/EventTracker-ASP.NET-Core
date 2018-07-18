@@ -1,52 +1,27 @@
 ﻿// stuff i need to be on page asap
 window.onload = function () {
-
-    //setting year
-    getYear();
-    //setting days for each month
-    setDays();
-    //setting months
-    setMonths();
-
+    
+    setMonthsListener();
+    setDaysListener();
 }
 
-function getYear() {
-    let x = document.getElementById("year");
-    x.innerText = new Date().getFullYear();
-}
-function setDays() {
-    var days = document.getElementById("days");
-    for (let v = 1; v <= 12; v++) {
-        let m = document.createElement("div");
-        m.id = "month" + v + "days";
-        days.appendChild(m);
-        for (let i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
-            let x = document.createElement("div");
-            x.id = "month" + v + "day" + i + "button";
-            x.innerText = i;
-            x.classList += "btn btn-info day";
-            x.addEventListener("click", function () { daysLink(document.getElementById("year").innerText, v, i) });
-            m.appendChild(x);
-        }
-    }
-}
-
-function setMonths() {
-    var monthName = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-    var months = document.getElementById("months");
+function setMonthsListener() {
     for (let i = 1; i <= 12; i++) {
-        let x = document.createElement("div");
-        x.id = "month" + i + "button";
-        x.innerText = monthName[i-1];
-        x.classList += "btn btn-warning month";
-        x.addEventListener("click", function () { hideDays(i) } );
-        months.appendChild(x);
+        let month = document.getElementById("month" + i + "button");
+        month.addEventListener("click", function () { hideDays(i) });
     }
-
     for (var i = 1; i <= 12; i++) {
         let d = document.getElementById("month" + i + "days");
         d.style.display = "none";
+    }
+}
+
+function setDaysListener() {
+    for (let v = 1; v <= 12; v++) {
+        for (let i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
+            let x = document.getElementById("month" + v + "day" + i + "button")
+            x.addEventListener("click", function () { daysLink(document.getElementById("year").innerText, v, i) });
+        }
     }
 }
 

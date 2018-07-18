@@ -29,19 +29,22 @@ namespace EventTracker.UserData
 
                 try
                 {
-                    command.CommandText = $"SELECT Title, Description, Date FROM Events WHERE userId = {userId}";
+                    command.CommandText = $"SELECT Title, Description, Date, StartTime, Length FROM Events WHERE userId = {userId}";
                     SqlDataReader reader = await command.ExecuteReaderAsync();
                     while (reader.Read())
                     {
                         events.Add(new EventModel
                         {
+
                             Title = reader.GetString(0),
                             Description = reader.GetString(1),
-                            Date = new Date { Year = reader.GetDateTime(2).Year, Month = reader.GetDateTime(2).Month, Day = reader.GetDateTime(2).Day }
+                            Date = new Date { Year = reader.GetDateTime(2).Year, Month = reader.GetDateTime(2).Month, Day = reader.GetDateTime(2).Day },
+                            StartTime = new Time { Hour = reader.GetTimeSpan(3).Hours, Minute = reader.GetTimeSpan(3).Minutes }
+
                         });
                     }
                 }
-                
+
                 catch (Exception e)
                 {
                     //TBD-.-
