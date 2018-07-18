@@ -14,22 +14,32 @@ namespace EventTracker.Controllers
     {
         private readonly AppSettings settings;
         IDbConnection _connection;
+        List<EventModel> list; 
 
         public EventsController(IDbConnection connection, IOptions<AppSettings> congif)
         {
             settings = congif.Value;
             _connection = connection;
+            list = _connection.GetAllEvents(15, settings.testDb).Result; 
         }
         
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(new JsonResult(_connection.GetAllEvents(15, settings.testDb)));
+            if (list.Count < 1)
+            {
+                return View(new EventModel { Title = "Error"});
+            }
+            else
+            {
+            return View(list);
+            }
         }
 
-        [HttpGet("event/{date}")]
-        public IActionResult GetEventsByDate(int date)
+        [HttpGet("Events/Index/{year}-{month}-{day}")]
+        public IActionResult Index(int year, int month, int day)
         {
-            return new JsonResult(_connection.GetAllEvents(15, settings.testDb));
+            return View(list.Where(e => e.Date.Year == year && e.Date.Month == month && e.Date.Day == day).ToList());
         }
 
     }

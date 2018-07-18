@@ -16,15 +16,16 @@ function getYear() {
 }
 function setDays() {
     var days = document.getElementById("days");
-    for (var v = 1; v <= 12; v++) {
+    for (let v = 1; v <= 12; v++) {
         let m = document.createElement("div");
         m.id = "month" + v + "days";
         days.appendChild(m);
-        for (var i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
+        for (let i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
             let x = document.createElement("div");
             x.id = "month" + v + "day" + i + "button";
             x.innerText = i;
             x.classList += "btn btn-info day";
+            x.addEventListener("click", function () { daysLink(document.getElementById("year").innerText, v, i) });
             m.appendChild(x);
         }
     }
@@ -53,6 +54,11 @@ function daysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
 }
 
+var daysLink = function (year, month, day) {
+    window.location.href = "/Events/Index/" + year + "-" + month + "-" + day;
+}
+
+// hide days based on month clicked
 var hideDays = function(id) {
         for (var i = 1; i <= 12; i++) {
                 let d = document.getElementById("month" + i + "days");
@@ -60,33 +66,6 @@ var hideDays = function(id) {
         }
         let q = document.getElementById("month" + id + "days");
         q.style.display = "block";
-}
-
-function loadEvents (value) {
-        let list = document.getElementById("eventsList");
-    for (let i = 0; i < value.length; i++) {
-
-        let x = document.createElement("div");
-        x.classList = "media-body";
-        x.id = "eventMediaBody" + i;
-        list.appendChild(x);
-
-        let y = document.createElement("h4");
-        y.classList = "media-heading eventName";
-        y.innerText = value[i].title;
-        document.getElementById("eventMediaBody" + i).appendChild(y);
-
-        let z = document.createElement("p");
-        z.id = "eveDesc" + i;
-        z.innerText = value[i].description;
-        document.getElementById("eventMediaBody" + i).appendChild(z);
-
-        let v = document.createElement("div");
-        v.classList = "media-right";
-        v.innerHTML = value[i].date.day + "/" + value[i].date.month + "/" + value[i].date.year;
-        document.getElementById("eventMediaBody" + i).appendChild(v);
-
-    }
 }
 
 

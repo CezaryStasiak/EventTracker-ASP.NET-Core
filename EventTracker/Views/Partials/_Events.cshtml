@@ -1,0 +1,14 @@
+﻿@model List<EventTracker.Models.EventModel>
+@{
+    foreach (var eve in Model)
+    {
+        <div class="media">
+            <div class="media-body">
+                <h5 class="mt-0">@eve.Title</h5>
+                @eve.Description
+                <p>@eve.Date - @eve.StartTime</p>
+            </div>
+        </div>
+
+    }
+}

@@ -1,4 +1,4 @@
-﻿@using Newtonsoft.Json;
+﻿@model List<EventTracker.Models.EventModel>
 <!DOCTYPE html>
 
 <html>
@@ -10,11 +10,6 @@
 </head>
 
 <body>
-    <script>
-        var model = '@Html.Raw(Json.Serialize(Model))';
-        var events = JSON.parse(model);
-        
-    </script>
     <section id="Calendar">
         <div class="container">
             <div class="row">
@@ -38,12 +33,10 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="media eventsRows" id="eventsList">
-                </div>
+                    @Html.Partial("/Views/Partials/_Events.cshtml", Model)
             </div>
         </div>
     </section>
     <script src="~/js/main.js"></script>
-    <script>loadEvents(events.value.result)</script>
 </body>
 </html>

@@ -50,6 +50,10 @@ namespace EventTracker
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Events}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "getEvents",
+                    template: "Events/Index/{year}-{month}-{day}");
             });
         }
     }
