@@ -4,22 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using EventTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace EventTracker.Controllers
 {
     public class MainController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(new UserModel { UserEmail = "edek", UserPassword = "edek2" });
         }
 
         [HttpPost]
-        public IActionResult Index(UserModel user)
+        public IActionResult Index(UserModel model)
         {
-            // user loging and session init goes here
-
-            return RedirectToAction("Index", "Events");
+            return View(new UserModel { UserEmail = model.UserEmail, UserPassword = model.UserPassword });
         }
+
     }
 }

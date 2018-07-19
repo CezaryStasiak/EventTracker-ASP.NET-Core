@@ -20,13 +20,7 @@ namespace EventTracker.UserData
             {
                 dbconnection.Open();
                 SqlCommand command = dbconnection.CreateCommand();
-                SqlTransaction transaction;
-
-                transaction = dbconnection.BeginTransaction("GetAllEvents");
-
                 command.Connection = dbconnection;
-                command.Transaction = transaction;
-
                 try
                 {
                     command.CommandText = $"SELECT Title, Description, Date, StartTime, Length FROM Events WHERE userId = {userId}";
@@ -35,14 +29,11 @@ namespace EventTracker.UserData
                     {
                         events.Add(new EventModel
                         {
-
                             Title = reader.GetString(0),
                             Description = reader.GetString(1),
                             Date = new Date { Year = reader.GetDateTime(2).Year, Month = reader.GetDateTime(2).Month, Day = reader.GetDateTime(2).Day },
                             StartTime = new Time { Hour = reader.GetTimeSpan(3).Hours, Minute = reader.GetTimeSpan(3).Minutes },
                             Length = new Time { Hour = reader.GetTimeSpan(4).Hours, Minute = reader.GetTimeSpan(4).Minutes }
-                            
-
                         });
                     }
                 }
@@ -55,5 +46,6 @@ namespace EventTracker.UserData
                 return events;
             }
         }
+        
     }
 }

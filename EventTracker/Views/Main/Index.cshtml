@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model EventTracker.Models.UserModel
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -7,19 +8,19 @@
     <link rel="stylesheet" href="~/css/main.css" />
     <title>EventTracker</title>
 </head>
-
 <body>
+<p>@Model.UserEmail</p>
+<p>@Model.UserPassword</p>
    <div class="container">
        <div class="row">
-           <div class="col-4">
-               @Html.TextBox("nameBox", "User Name", new { @class = "form-control" })
-               @Html.Password("passBox", "", new { @class = "form-control" })
-           </div>
            <div class="col-2">
                <form action="" method="post">
-                       <input type="submit" value="Login" class="btn btn-default" />
+                   <input type="text" name="UserEmail" class="form-control" />
+                   <input type="text" name="UserPassword" class="form-control" />
+                   <input type="submit" value="Login" class="btn btn-default" />
                </form>
            </div>
+             
            </div>
        </div>
 </body>
