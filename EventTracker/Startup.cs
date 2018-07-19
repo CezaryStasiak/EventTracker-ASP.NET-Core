@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace EventTracker
 {
@@ -16,7 +17,6 @@ namespace EventTracker
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                // json with string
                 .AddJsonFile("appsettings.json", false, true);
             Configuration = builder.Build();
         }
@@ -27,8 +27,16 @@ namespace EventTracker
             services.AddMvc();
             // database as service
             services.Add(new ServiceDescriptor(typeof(IDbConnection), new DbConnection()));
+
             // connection string
             services.Configure<AppSettings>(Configuration.GetSection("ConnectionStrings"));
+
+            // adding session for users
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.Cookie.Name = "EventTracker";
+            });
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -44,12 +52,17 @@ namespace EventTracker
             }
 
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Events}/{action=Index}/{id?}");
+                    template: "{controller=Main}/{action=Index}");
+
+                routes.MapRoute(
+                    name: "events",
+                    template: "{controller=Events}/{action=Index}");
 
                 routes.MapRoute(
                     name: "getEvents",

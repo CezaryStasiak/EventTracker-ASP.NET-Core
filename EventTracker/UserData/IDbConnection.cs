@@ -6,6 +6,6 @@ namespace EventTracker.UserData
 {
     public interface IDbConnection
     {
-        Task<List<EventModel>> GetAllEvents(int userId, string connectionString);
+        Task<IEnumerable<EventModel>> GetAllEvents(int userId, string connectionString);
     }
 }

@@ -14,13 +14,13 @@ namespace EventTracker.Controllers
     {
         private readonly AppSettings settings;
         IDbConnection _connection;
-        List<EventModel> list; 
+        List<EventModel> list;
 
         public EventsController(IDbConnection connection, IOptions<AppSettings> congif)
         {
             settings = congif.Value;
             _connection = connection;
-            list = _connection.GetAllEvents(15, settings.testDb).Result; 
+            list = _connection.GetAllEvents(15, settings.testDb).Result.ToList(); 
         }
         
         [HttpGet]
@@ -28,7 +28,7 @@ namespace EventTracker.Controllers
         {
             if (list.Count < 1)
             {
-                return View(new EventModel { Title = "Error"});
+                return View(new List<EventModel> { new EventModel { Title = "Error" } });
             }
             else
             {

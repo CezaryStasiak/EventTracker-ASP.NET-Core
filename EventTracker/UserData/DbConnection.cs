@@ -12,7 +12,7 @@ namespace EventTracker.UserData
     public sealed class DbConnection : IDbConnection
     {
         //async db connection 
-        public async Task<List<EventModel>> GetAllEvents(int userId, string connectionString)
+        public async Task<IEnumerable<EventModel>> GetAllEvents(int userId, string connectionString)
         {
             // should use Store Procedures in release !
             List<EventModel> events = new List<EventModel>();
@@ -39,7 +39,9 @@ namespace EventTracker.UserData
                             Title = reader.GetString(0),
                             Description = reader.GetString(1),
                             Date = new Date { Year = reader.GetDateTime(2).Year, Month = reader.GetDateTime(2).Month, Day = reader.GetDateTime(2).Day },
-                            StartTime = new Time { Hour = reader.GetTimeSpan(3).Hours, Minute = reader.GetTimeSpan(3).Minutes }
+                            StartTime = new Time { Hour = reader.GetTimeSpan(3).Hours, Minute = reader.GetTimeSpan(3).Minutes },
+                            Length = new Time { Hour = reader.GetTimeSpan(4).Hours, Minute = reader.GetTimeSpan(4).Minutes }
+                            
 
                         });
                     }
