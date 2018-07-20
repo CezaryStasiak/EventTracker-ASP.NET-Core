@@ -9,6 +9,8 @@ namespace EventTracker.Models
 {
     public class EventModel
     {
+        public int UserId { get; set; }
+
         [Required]
         [Range(5,25)]
         public string Title { get; set; }

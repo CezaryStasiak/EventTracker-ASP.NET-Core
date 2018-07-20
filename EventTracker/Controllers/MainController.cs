@@ -13,13 +13,14 @@ namespace EventTracker.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new UserModel { UserEmail = "edek", UserPassword = "edek2" });
+            return View();
         }
 
         [HttpPost]
         public IActionResult Index(UserModel model)
         {
-            return View(new UserModel { UserEmail = model.UserEmail, UserPassword = model.UserPassword });
+
+            return View();
         }
 
     }
