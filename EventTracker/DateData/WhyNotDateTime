@@ -1,3 +1,0 @@
-﻿
-I rather have my own model classes for what i'm doing. Using DateTime is so annoying and inconvenient for just "time storage".
-And on top of that i don't need all the functionality that DateTime offers.

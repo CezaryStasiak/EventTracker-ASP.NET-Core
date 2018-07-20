@@ -1,14 +1,14 @@
 ﻿// stuff i need to be on page asap
 window.onload = function () {
-    
+
     setMonthsListener();
     setDaysListener();
-}
+};
 
 function setMonthsListener() {
     for (let i = 1; i <= 12; i++) {
         let month = document.getElementById("month" + i + "button");
-        month.addEventListener("click", function () { hideDays(i) });
+        month.addEventListener("click", function () { hideDays(i); });
     }
     for (var i = 1; i <= 12; i++) {
         let d = document.getElementById("month" + i + "days");
@@ -19,8 +19,8 @@ function setMonthsListener() {
 function setDaysListener() {
     for (let v = 1; v <= 12; v++) {
         for (let i = 1; i <= daysInMonth(new Date().getFullYear(), v); i++) {
-            let x = document.getElementById("month" + v + "day" + i + "button")
-            x.addEventListener("click", function () { daysLink(document.getElementById("year").innerText, v, i) });
+            let x = document.getElementById("month" + v + "day" + i + "button");
+            x.addEventListener("click", function () { daysLink(document.getElementById("year").innerText, v, i); });
         }
     }
 }
@@ -31,17 +31,17 @@ function daysInMonth(year, month) {
 
 var daysLink = function (year, month, day) {
     window.location.href = "/Events/Index/" + year + "-" + month + "-" + day;
-}
+};
 
 // hide days based on month clicked
-var hideDays = function(id) {
-        for (var i = 1; i <= 12; i++) {
-                let d = document.getElementById("month" + i + "days");
-                d.style.display = "none";
-        }
-        let q = document.getElementById("month" + id + "days");
-        q.style.display = "block";
-}
+var hideDays = function (id) {
+    for (var i = 1; i <= 12; i++) {
+        let d = document.getElementById("month" + i + "days");
+        d.style.display = "none";
+    }
+    let q = document.getElementById("month" + id + "days");
+    q.style.display = "block";
+};
 
 
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using EventTracker.DateData;
 
 namespace EventTracker.Models
 {
@@ -17,11 +16,11 @@ namespace EventTracker.Models
 
         public string Description { get; set; }
 
-        public Date Date { get; set; }
+        public DateTime Date { get; set; }
 
-        public Time StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public Time Length { get; set; }
+        public TimeSpan Length { get; set; }
     }
     
 }

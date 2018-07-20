@@ -20,11 +20,11 @@ namespace EventTracker.Controllers
         {
             settings = congif.Value;
             _connection = connection;
-            list = _connection.GetAllEvents(15, settings.testDb).Result.ToList(); 
+            list = _connection.ReadToList<EventModel>(settings.testDb, "Events").ToList();
         }
         
         [HttpGet]
-        public IActionResult Index()
+        public ActionResult Index()
         {
             if (list.Count < 1)
             {
@@ -44,7 +44,7 @@ namespace EventTracker.Controllers
             {
                 Title = Title,
                 Description = Description,
-                Date = new DateData.Date { Year = int.Parse(date[0]), Day = int.Parse(date[1]), Month = int.Parse(date[2]) }
+                Date = new DateTime(int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2])) 
             });
             return View(list);
         }

@@ -6,7 +6,9 @@
             <div class="media-body">
                 <h5 class="mt-0">@eve.Title.Trim()</h5>
                 @eve.Description
-                <p>@eve.Date</p>
+                <p>@eve.Date.Year/@eve.Date.Month/@eve.Date.Day</p>
+                <p>@eve.StartTime.Hours:@eve.StartTime.Minutes</p>
+                <p>Last : @eve.Length.Hours:@eve.Length.Minutes</p>
             </div>
         </div>
 
