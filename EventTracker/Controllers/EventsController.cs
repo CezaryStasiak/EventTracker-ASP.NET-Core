@@ -15,12 +15,13 @@ namespace EventTracker.Controllers
         public EventsController(IDbConnection connection)
         {
             _connection = connection;
-            list = _connection.Read<EventModel>("Events").ToList();
+            list = _connection.Read<EventModel>("SELECT * FROM Events").ToList();
         }
         
         [HttpGet]
         public ActionResult Index()
         {
+
             if (list.Count < 1)
             {
                 return View(new List<EventModel> { new EventModel { Title = "Error" } });
