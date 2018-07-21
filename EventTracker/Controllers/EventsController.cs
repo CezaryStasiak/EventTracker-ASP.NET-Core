@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EventTracker.Models;
-using EventTracker.Settings;
 using EventTracker.UserData;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace EventTracker.Controllers
 {
     public class EventsController : Controller
     {
-        private readonly AppSettings settings;
         IDbConnection _connection;
         List<EventModel> list;
 
-        public EventsController(IDbConnection connection, IOptions<AppSettings> congif)
+        public EventsController(IDbConnection connection)
         {
-            settings = congif.Value;
             _connection = connection;
-            list = _connection.ReadToList<EventModel>(settings.testDb, "Events").ToList();
+            list = _connection.Read<EventModel>("Events").ToList();
         }
         
         [HttpGet]

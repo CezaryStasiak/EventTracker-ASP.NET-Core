@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using EventTracker.UserData;
-using EventTracker.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,11 +24,8 @@ namespace EventTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            // database as service
-            services.Add(new ServiceDescriptor(typeof(IDbConnection), new DbConnection()));
-
-            // connection string
-            services.Configure<AppSettings>(Configuration.GetSection("ConnectionStrings"));
+            // database as service, direct injection of connection string
+            services.Add(new ServiceDescriptor(typeof(IDbConnection), new SqlDbConnection(Configuration.GetSection("ConnectionStrings")["testDb"])));
 
             // adding session for users
             services.AddDistributedMemoryCache();

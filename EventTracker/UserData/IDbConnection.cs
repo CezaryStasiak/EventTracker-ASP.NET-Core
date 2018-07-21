@@ -6,6 +6,6 @@ namespace EventTracker.UserData
 {
     public interface IDbConnection
     {
-        IEnumerable<T> ReadToList<T>(string connectionString, string tableName) where T : new();
+        IEnumerable<T> Read<T>(string tableName) where T : new();
     }
 }
