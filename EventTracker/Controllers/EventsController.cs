@@ -21,6 +21,7 @@ namespace EventTracker.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+
             //insert testing------------------------------------
             _connection.Insert(
                 new EventModel()

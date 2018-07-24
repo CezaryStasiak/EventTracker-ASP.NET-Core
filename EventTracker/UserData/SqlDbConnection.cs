@@ -64,7 +64,7 @@ namespace EventTracker.UserData
 
             string values = QueryBuilder.BuildPropertiesList(obj, prop, objectModel);
             string types = QueryBuilder.BuildTypeList(obj, prop, objectModel);
-            
+
             using (SqlConnection dbconnection = new SqlConnection(ConnectionString))
             {
                 dbconnection.Open();
@@ -77,65 +77,64 @@ namespace EventTracker.UserData
 
         }
         
-    }
-
-    internal static class QueryBuilder
-    {
-        public static string BuildPropertiesList<T>(T obj, MemberInfo[] prop, Type objectModel)
+        static class QueryBuilder
         {
-            string result = "";
-            
-            for (int i = 0; i < prop.Length; i++)
+            public static string BuildPropertiesList<T>(T obj, MemberInfo[] prop, Type objectModel)
             {
-                if (i == prop.Length - 1)
+                string result = "";
+
+                for (int i = 0; i < prop.Length; i++)
                 {
-                    if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                    if (i == prop.Length - 1)
                     {
-                        result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "'";
+                        if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                        {
+                            result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "'";
+                        }
+                        else
+                        {
+                            result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "'";
+                        }
                     }
                     else
                     {
-                        result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "'";
+                        if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                        {
+                            result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "', ";
+                        }
+                        else
+                        {
+                            result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "', ";
+                        }
                     }
                 }
-                else
+
+                return result;
+            }
+
+            public static string BuildTypeList<T>(T obj, MemberInfo[] prop, Type type)
+            {
+                string result = "";
+                for (int i = 0; i < prop.Length; i++)
                 {
-                    if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                    if (i == prop.Length - 1)
                     {
-                        result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "', ";
+                        result += prop[i].Name;
                     }
                     else
                     {
-                        result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "', ";
+                        result += prop[i].Name + ", ";
                     }
                 }
+                return result;
             }
 
-            return result;
-        }
-
-        public static string BuildTypeList<T>(T obj, MemberInfo[] prop, Type type)
-        {
-            string result = "";
-            for (int i = 0; i < prop.Length; i++)
+            private static string DateTimeFormatHandler(object v)
             {
-                if (i == prop.Length - 1)
-                {
-                    result += prop[i].Name;
-                }
-                else
-                {
-                    result += prop[i].Name + ", ";
-                }
+                DateTime date = new DateTime();
+                date = (DateTime)v;
+                return date.ToString("yyyy-MM-dd");
             }
-            return result;
-        }
-
-        private static string DateTimeFormatHandler(object v)
-        {
-            DateTime date = new DateTime();
-            date = (DateTime)v;
-            return date.ToString("yyyy-MM-dd");
         }
     }
 
