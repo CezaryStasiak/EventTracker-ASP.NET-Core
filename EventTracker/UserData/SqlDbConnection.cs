@@ -59,58 +59,82 @@ namespace EventTracker.UserData
 
         public void Insert<T>(T obj, string TableName)
         {
-            StringBuilder builder = new StringBuilder();
-            StringBuilder typeBuilder = new StringBuilder();
-            typeBuilder.Clear();
-            builder.Clear();
+            Type objectModel = obj.GetType();
+            MemberInfo[] prop = objectModel.GetProperties();
 
-            Type type = obj.GetType();
-            MemberInfo[] prop = type.GetProperties();
-
-            for (int i = 0; i < prop.Length; i++)
-            {
-                if (i == prop.Length - 1)
-                {
-                    if (type.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
-                    {
-                        builder.Append(" '" + DateTimeFormatHandler(type.GetProperty(prop[i].Name).GetValue(obj)) + "'");
-                    }
-                    else
-                    {
-                        builder.Append(" '" + type.GetProperty(prop[i].Name).GetValue(obj) + "'");
-                    }
-                        typeBuilder.Append(prop[i].Name);
-                }
-                else
-                {
-                    if (type.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
-                    {
-                        builder.Append(" '" + DateTimeFormatHandler(type.GetProperty(prop[i].Name).GetValue(obj)) + "', ");
-                    }
-                    else
-                    {
-                        builder.Append(" '" + type.GetProperty(prop[i].Name).GetValue(obj) + "', ");
-                    }
-                        typeBuilder.Append(prop[i].Name + ", ");
-                }
-            }
-
+            string values = QueryBuilder.BuildPropertiesList(obj, prop, objectModel);
+            string types = QueryBuilder.BuildTypeList(obj, prop, objectModel);
+            
             using (SqlConnection dbconnection = new SqlConnection(ConnectionString))
             {
                 dbconnection.Open();
                 SqlCommand command = dbconnection.CreateCommand();
                 command.Connection = dbconnection;
-                command.CommandText = $"INSERT INTO {TableName} ({typeBuilder.ToString()}) VALUES ({builder.ToString()})";
+                command.CommandText = $"INSERT INTO {TableName} ({types}) VALUES ({values})";
                 command.ExecuteNonQuery();
                 dbconnection.Close();
             }
+
+        }
+        
+    }
+
+    internal static class QueryBuilder
+    {
+        public static string BuildPropertiesList<T>(T obj, MemberInfo[] prop, Type objectModel)
+        {
+            string result = "";
             
+            for (int i = 0; i < prop.Length; i++)
+            {
+                if (i == prop.Length - 1)
+                {
+                    if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                    {
+                        result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "'";
+                    }
+                    else
+                    {
+                        result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "'";
+                    }
+                }
+                else
+                {
+                    if (objectModel.GetProperty(prop[i].Name).PropertyType == typeof(DateTime))
+                    {
+                        result += " '" + DateTimeFormatHandler(objectModel.GetProperty(prop[i].Name).GetValue(obj)) + "', ";
+                    }
+                    else
+                    {
+                        result += " '" + objectModel.GetProperty(prop[i].Name).GetValue(obj) + "', ";
+                    }
+                }
+            }
+
+            return result;
         }
 
-        private string DateTimeFormatHandler(object v)
+        public static string BuildTypeList<T>(T obj, MemberInfo[] prop, Type type)
+        {
+            string result = "";
+            for (int i = 0; i < prop.Length; i++)
+            {
+                if (i == prop.Length - 1)
+                {
+                    result += prop[i].Name;
+                }
+                else
+                {
+                    result += prop[i].Name + ", ";
+                }
+            }
+            return result;
+        }
+
+        private static string DateTimeFormatHandler(object v)
         {
             DateTime date = new DateTime();
-            date = (DateTime) v;
+            date = (DateTime)v;
             return date.ToString("yyyy-MM-dd");
         }
     }

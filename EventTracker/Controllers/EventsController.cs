@@ -21,7 +21,18 @@ namespace EventTracker.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-
+            //insert testing------------------------------------
+            _connection.Insert(
+                new EventModel()
+                {
+                    Title = "New Title",
+                    Description = "Description",
+                    Date = new DateTime(2018, 05, 31),
+                    UserId = 15,
+                    StartTime = new TimeSpan(15, 20, 00),
+                    Length = new TimeSpan(4, 30, 0)
+                }, "Events");
+            // --------------------------------------------------
             if (list.Count < 1)
             {
                 return View(new List<EventModel> { new EventModel { Title = "Error" } });
