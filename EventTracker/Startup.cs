@@ -54,7 +54,7 @@ namespace EventTracker
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Events}/{action=Index}");
+                    template: "{controller=Main}/{action=Index}");
 
                 routes.MapRoute(
                     name: "events",

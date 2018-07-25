@@ -3,33 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using EventTracker.Models;
 using EventTracker.UserData;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventTracker.Controllers
 {
     public class EventsController : Controller
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        ISession _session => _httpContextAccessor.HttpContext.Session;
         IDbConnection _connection;
         List<EventModel> list;
-
-        public EventsController(IDbConnection connection)
+        
+        public EventsController(IDbConnection connection, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _connection = connection;
-            list = _connection.Read<EventModel>("SELECT * FROM Events").ToList();
+            list = _connection.Read<EventModel>($"SELECT * FROM Events WHERE UserId={_session.GetInt32("UserId")}").ToList();
         }
         
         [HttpGet]
         public ActionResult Index()
         {
-
             //insert testing------------------------------------
             _connection.Insert(
                 new EventModel()
                 {
-                    Title = "New Title",
-                    Description = "Description",
+                    Title = "Something",
+                    Description = "Doing Something",
                     Date = new DateTime(2018, 05, 31),
-                    UserId = 15,
+                    UserId = 25,
                     StartTime = new TimeSpan(15, 20, 00),
                     Length = new TimeSpan(4, 30, 0)
                 }, "Events");
