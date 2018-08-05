@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace EventTracker.Services
 {
-    public class UserManager
+    public class UserManager : IUserManager
     {
         string _connectionString;
 
@@ -21,7 +21,7 @@ namespace EventTracker.Services
             _connectionString = connectionString;
         }
         
-        public async void SignIn(HttpContext httpContext, UserModel user, bool isPersistent = false)
+        public async void SignIn(HttpContext httpContext, UserModel user)
         {
             string sql = "SELECT * FROM Users WHERE UserEmail = @UserEmail AND UserPassword = @UserPassword;";
 

@@ -28,8 +28,6 @@ namespace EventTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            // database as service, direct injection of connection string
-            services.Add(new ServiceDescriptor(typeof(IDbConnection), new SqlDbConnection(Configuration.GetSection("ConnectionStrings")["testDb"])));
             
             services.AddAuthentication(
             CookieAuthenticationDefaults.AuthenticationScheme
@@ -56,6 +54,14 @@ namespace EventTracker
                         .GetSection("ConnectionStrings")["testDb"]
                     )
                 );
+
+            services.AddTransient(
+                m => new EventManager(
+                    Configuration
+                        .GetSection("ConnectionStrings")["testDb"]
+                    )
+                );
+
             services.AddDistributedMemoryCache();
         }
 

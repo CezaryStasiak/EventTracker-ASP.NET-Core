@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using EventTracker.Models;
+using EventTracker.Services;
 using EventTracker.UserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,22 +16,26 @@ namespace EventTracker.Controllers
     public class EventsController : Controller
     {
         private IHttpContextAccessor _httpContextAccessor;
-        IDbConnection _connection;
+        private HttpContext httpcontext;
+        private IEventManager _eventManager;
         List<EventModel> list;
         
-        public EventsController(IDbConnection connection, IHttpContextAccessor httpContextAccessor)
+        public EventsController(IHttpContextAccessor httpContextAccessor, EventManager eventManager)
         {
             _httpContextAccessor = httpContextAccessor;
-            _connection = connection;
-            var httpcontext = _httpContextAccessor.HttpContext;
-            var userId = httpcontext.User.Claims.SingleOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value;
-            list = _connection.Read<EventModel>($"SELECT * FROM Events WHERE UserId={userId}").ToList();
+            _eventManager = eventManager;
+            httpcontext = _httpContextAccessor.HttpContext;
+        }
+
+        private async Task GetEventsAsync(string userId)
+        {
+            list = (List<EventModel>) await _eventManager.GetEventsAsync(userId);
         }
         
         [HttpGet]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-
+            await GetEventsAsync(httpcontext.User.Claims.SingleOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value);
             // --------------------------------------------------
             if (list.Count < 1)
             {

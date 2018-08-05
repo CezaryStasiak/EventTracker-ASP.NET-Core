@@ -8,7 +8,7 @@ namespace EventTracker.Controllers
 {
     public class MainController : Controller
     {
-        UserManager _userManager;
+        IUserManager _userManager;
 
         public MainController(UserManager userManager)
         {
