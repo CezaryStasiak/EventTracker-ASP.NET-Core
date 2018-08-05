@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.AspNetCore.Identity;
+using EventTracker.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using EventTracker.Services;
 
 namespace EventTracker
 {
@@ -26,14 +30,36 @@ namespace EventTracker
             services.AddMvc();
             // database as service, direct injection of connection string
             services.Add(new ServiceDescriptor(typeof(IDbConnection), new SqlDbConnection(Configuration.GetSection("ConnectionStrings")["testDb"])));
-
-            // adding session for users
-            services.AddDistributedMemoryCache();
-            services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
-                options.Cookie.Name = "EventTracker";
+            
+            services.AddAuthentication(
+            CookieAuthenticationDefaults.AuthenticationScheme
+            ).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+            options =>
+            {
+                options.LoginPath = "/Main/Index";
+                options.LogoutPath = "/Main/Index";
             });
+
+            services.AddMvc();
+
+            // authentication 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+
+            services.AddTransient(
+                m => new UserManager(
+                    Configuration
+                        .GetSection("ConnectionStrings")["testDb"]
+                    )
+                );
+            services.AddDistributedMemoryCache();
         }
+
+
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -48,7 +74,7 @@ namespace EventTracker
             }
 
             app.UseStaticFiles();
-            app.UseSession();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

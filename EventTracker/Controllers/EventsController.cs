@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using EventTracker.Models;
 using EventTracker.UserData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventTracker.Controllers
 {
+    [Authorize]
     public class EventsController : Controller
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        ISession _session => _httpContextAccessor.HttpContext.Session;
+        private IHttpContextAccessor _httpContextAccessor;
         IDbConnection _connection;
         List<EventModel> list;
         
@@ -19,23 +21,15 @@ namespace EventTracker.Controllers
         {
             _httpContextAccessor = httpContextAccessor;
             _connection = connection;
-            list = _connection.Read<EventModel>($"SELECT * FROM Events WHERE UserId={_session.GetInt32("UserId")}").ToList();
+            var httpcontext = _httpContextAccessor.HttpContext;
+            var userId = httpcontext.User.Claims.SingleOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value;
+            list = _connection.Read<EventModel>($"SELECT * FROM Events WHERE UserId={userId}").ToList();
         }
         
         [HttpGet]
         public ActionResult Index()
         {
-            //insert testing------------------------------------
-            _connection.Insert(
-                new EventModel()
-                {
-                    Title = "Something",
-                    Description = "Doing Something",
-                    Date = new DateTime(2018, 05, 31),
-                    UserId = 25,
-                    StartTime = new TimeSpan(15, 20, 00),
-                    Length = new TimeSpan(4, 30, 0)
-                }, "Events");
+
             // --------------------------------------------------
             if (list.Count < 1)
             {
