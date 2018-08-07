@@ -43,6 +43,11 @@ namespace EventTracker.Services
 
         private IEnumerable<Claim> GetUserClaims(UserModel user)
         {
+            if (user == null)
+            {
+                throw new Exception();
+            }
+
             List<Claim> claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()));

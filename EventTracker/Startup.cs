@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using EventTracker.UserData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +60,7 @@ namespace EventTracker
                         .GetSection("ConnectionStrings")["testDb"]
                     )
                 );
-
+            
             services.AddDistributedMemoryCache();
         }
 
@@ -87,14 +86,6 @@ namespace EventTracker
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Main}/{action=Index}");
-
-                routes.MapRoute(
-                    name: "events",
-                    template: "{controller=Events}/{action=Index}");
-
-                routes.MapRoute(
-                    name: "getEvents",
-                    template: "Events/Index/{year}-{month}-{day}");
             });
         }
     }

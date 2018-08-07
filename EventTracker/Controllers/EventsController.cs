@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using EventTracker.Models;
 using EventTracker.Services;
-using EventTracker.UserData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,15 +35,7 @@ namespace EventTracker.Controllers
         public async Task<ActionResult> Index()
         {
             await GetEventsAsync(httpcontext.User.Claims.SingleOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value);
-            // --------------------------------------------------
-            if (list.Count < 1)
-            {
-                return View(new List<EventModel> { new EventModel { Title = "Error" } });
-            }
-            else
-            {
             return View(list);
-            }
         }
 
         [HttpPost]
@@ -61,9 +52,17 @@ namespace EventTracker.Controllers
         }
 
         [HttpGet("Events/Index/{year}-{month}-{day}")]
-        public IActionResult Index(int year, int month, int day)
+        public async Task<IActionResult> Index(int year, int month, int day)
         {
-            return View(list.Where(e => e.Date.Year == year && e.Date.Month == month && e.Date.Day == day).ToList());
+            await GetEventsAsync(httpcontext.User.Claims.SingleOrDefault(a => a.Type == ClaimTypes.NameIdentifier).Value);
+            try
+            {
+                return View(list.Where(e => e.Date.Year == year && e.Date.Month == month && e.Date.Day == day).ToList());
+            }
+            catch
+            {
+                return View(list);
+            }
         }
 
     }

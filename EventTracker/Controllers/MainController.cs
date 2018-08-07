@@ -18,15 +18,14 @@ namespace EventTracker.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-
             return View();
         }
 
         [HttpPost]
         public IActionResult Index(UserModel model) 
         {
-            if (!ModelState.IsValid)
-                return View(model);
+            if (!ModelState.IsValid )
+                return View();
             try
             {
                 //authenticate
@@ -38,10 +37,9 @@ namespace EventTracker.Controllers
                 _userManager.SignIn(HttpContext, user);
                 return RedirectToAction("Index", "Events", null);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ModelState.AddModelError("summary", ex.Message);
-                return View(model);
+                return RedirectToAction("Index", "Main");
             }
         }
 
