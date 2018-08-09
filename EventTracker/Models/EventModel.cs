@@ -2,7 +2,7 @@
 
 namespace EventTracker.Models
 {
-    public class EventModel
+    public class EventModel : IEventModel
     {
         public int UserId { get; set; }
         

@@ -38,7 +38,7 @@
                         @{
                             for (int v = 1; v <= 12; v++)
                             {
-                                <div id="month@(v)days">
+                                <div id="month@(v)days" style="display:none;">
                                     @{
                                         for (int i = 1; i <= DateTime.DaysInMonth(DateTime.Now.Year, v); i++)
                                         {

@@ -41,14 +41,8 @@ namespace EventTracker.Controllers
         [HttpPost]
         public IActionResult Index(string Title, string Description, string Date)
         {
-            string[] date = Date.Split("-");
-            list.Add(new EventModel
-            {
-                Title = Title,
-                Description = Description,
-                Date = new DateTime(int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2])) 
-            });
-            return View(list);
+
+            return View();
         }
 
         [HttpGet("Events/Index/{year}-{month}-{day}")]

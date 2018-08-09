@@ -2,9 +2,11 @@
 
 namespace EventTracker.Models
 {
-    public class UserModel
+    public class UserModel : IUserModel
     {
-        public int UserId { get; set; }
+        public int UserId { get; }
+
+        public IUserValidation Validation {get; set;}
         
         [Required]
         [MaxLength(50, ErrorMessage = "Your email is a bit too long!")]
